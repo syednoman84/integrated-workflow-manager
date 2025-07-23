@@ -4,15 +4,19 @@ import com.example.integratedworkflowmanager.entity.*;
 import com.example.integratedworkflowmanager.repository.*;
 import com.example.integratedworkflowmanager.service.WorkflowService;
 import com.example.integratedworkflowmanager.util.ExpressionUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mvel2.MVEL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,6 +35,8 @@ public class WorkflowServiceImpl implements WorkflowService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final WorkflowTransactionalService transactionalService;
+
+
 
     @Override
     public Map<String, Object> runWorkflow(String workflowName, Map<String, Object> inputParams) {
@@ -171,6 +177,15 @@ public class WorkflowServiceImpl implements WorkflowService {
     @FunctionalInterface
     interface MVELFunction<T, R> {
         R apply(T t);
+    }
+
+    public void saveWorkflowFromJsonFile(String name, String workflowJson) {
+        WorkflowDefinition definition = WorkflowDefinition.builder()
+                .name(name)
+                .workflowJson(workflowJson)
+                .createdAt(LocalDateTime.now())
+                .build();
+        workflowDefinitionRepository.save(definition);
     }
 
 }

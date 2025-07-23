@@ -4,5 +4,6 @@ import java.util.Map;
 
 public interface WorkflowService {
     Map<String, Object> runWorkflow(String workflowName, Map<String, Object> inputParams);
+    void saveWorkflowFromJsonFile(String name, String workflowJson);
 }
 

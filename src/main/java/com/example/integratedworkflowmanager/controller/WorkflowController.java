@@ -4,9 +4,13 @@ import com.example.integratedworkflowmanager.entity.WorkflowDefinition;
 import com.example.integratedworkflowmanager.repository.WorkflowDefinitionRepository;
 import com.example.integratedworkflowmanager.service.WorkflowService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -75,5 +79,18 @@ public class WorkflowController {
                 .map(WorkflowDefinition::getName)
                 .toList();
         return ResponseEntity.ok(names);
+    }
+
+    // Upload workflow via file
+    @PostMapping("/fileupload")
+    public ResponseEntity<?> uploadWorkflow(@RequestParam("name") String name,
+                                            @RequestParam("file") MultipartFile file) {
+        try {
+            String workflowJson = new String(file.getBytes(), StandardCharsets.UTF_8);
+            workflowService.saveWorkflowFromJsonFile(name, workflowJson);
+            return ResponseEntity.ok("✅ Workflow uploaded successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("❌ Failed to upload workflow: " + e.getMessage());
+        }
     }
 }

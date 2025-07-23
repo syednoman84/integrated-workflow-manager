@@ -66,6 +66,9 @@ docker rm wiremock
 
 
 ✅ Step-by-Step: Create Mock Endpoints in WireMock
+
+You can run these curls one by one to add them individually OR you can also run the wiremock-endpoints-mappings.sh to add them all together.
+
 🟡 1. authToken — POST /post
 
 curl -X POST http://localhost:8089/__admin/mappings \
@@ -308,3 +311,7 @@ Expected response:
 curl -X POST http://localhost:8089/validate-user \
   -H "Content-Type: application/json" \
   -d '{"userId": "12345", "loanAmount": 5000}'
+
+
+
+
