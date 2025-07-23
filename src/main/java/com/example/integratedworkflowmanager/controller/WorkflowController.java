@@ -3,6 +3,9 @@ package com.example.integratedworkflowmanager.controller;
 import com.example.integratedworkflowmanager.entity.WorkflowDefinition;
 import com.example.integratedworkflowmanager.repository.WorkflowDefinitionRepository;
 import com.example.integratedworkflowmanager.service.WorkflowService;
+import com.example.integratedworkflowmanager.util.WorkflowValidator;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ public class WorkflowController {
 
     private final WorkflowService workflowService;
     private final WorkflowDefinitionRepository workflowRepo;
+    private final ObjectMapper objectMapper;
 
     // 🟢 Run a workflow
     @PostMapping("/run/{name}")
@@ -35,22 +39,42 @@ public class WorkflowController {
     // ➕ Add a new workflow
     @PostMapping
     public ResponseEntity<?> addWorkflow(@RequestBody WorkflowDefinition workflow) {
-        if (workflowRepo.existsByName(workflow.getName())) {
-            return ResponseEntity.badRequest().body("Workflow with this name already exists.");
+        try {
+            if (workflowRepo.existsByName(workflow.getName())) {
+                return ResponseEntity.badRequest().body("Workflow with this name already exists.");
+            }
+
+            // 🔍 Validate JSON structure before saving
+            JsonNode workflowJsonNode = objectMapper.readTree(workflow.getWorkflowJson());
+            WorkflowValidator.validate(workflowJsonNode);
+
+            workflow.setCreatedAt(LocalDateTime.now());
+            workflowRepo.save(workflow);
+
+            return ResponseEntity.ok("✅ Workflow added.");
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + ex.getMessage());
         }
-        workflow.setCreatedAt(LocalDateTime.now());
-        workflowRepo.save(workflow);
-        return ResponseEntity.ok("Workflow added.");
     }
 
-    // 🔁 Update existing workflow
+    // Update existing workflow
     @PutMapping("/{name}")
     public ResponseEntity<?> updateWorkflow(@PathVariable String name, @RequestBody WorkflowDefinition updated) {
-        WorkflowDefinition existing = workflowRepo.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Workflow not found: " + name));
-        existing.setWorkflowJson(updated.getWorkflowJson());
-        workflowRepo.save(existing);
-        return ResponseEntity.ok("Workflow updated.");
+        try {
+            WorkflowDefinition existing = workflowRepo.findByName(name)
+                    .orElseThrow(() -> new RuntimeException("Workflow not found: " + name));
+
+            // 🔍 Validate updated JSON
+            JsonNode workflowJsonNode = objectMapper.readTree(updated.getWorkflowJson());
+            WorkflowValidator.validate(workflowJsonNode);
+
+            existing.setWorkflowJson(updated.getWorkflowJson());
+            workflowRepo.save(existing);
+
+            return ResponseEntity.ok("✅ Workflow updated.");
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + ex.getMessage());
+        }
     }
 
     // ❌ Delete workflow
@@ -87,10 +111,18 @@ public class WorkflowController {
                                             @RequestParam("file") MultipartFile file) {
         try {
             String workflowJson = new String(file.getBytes(), StandardCharsets.UTF_8);
+
+            // 🔍 Validate workflow JSON
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode workflowJsonNode = mapper.readTree(workflowJson);
+            WorkflowValidator.validate(workflowJsonNode); // throws if invalid
+
+            // Save after validation
             workflowService.saveWorkflowFromJsonFile(name, workflowJson);
+
             return ResponseEntity.ok("✅ Workflow uploaded successfully");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Failed to upload workflow: " + e.getMessage());
+            return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + e.getMessage());
         }
     }
 }
