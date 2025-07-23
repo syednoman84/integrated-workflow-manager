@@ -1,0 +1,71 @@
+/* Navbar.css */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #282c34;
+  padding: 12px 24px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* Logo stays on left */
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-right: 40px; /* Add spacing between logo and menus */
+}
+
+/* Menu container next to logo */
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+/* Dropdown positioning */
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  background-color: transparent;
+  color: white;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #444;
+  min-width: 200px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  flex-direction: column;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #555;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e3e3e;
+}
