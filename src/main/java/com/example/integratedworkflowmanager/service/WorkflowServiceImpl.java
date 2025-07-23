@@ -1,5 +1,7 @@
 package com.example.integratedworkflowmanager.service;
 
+import com.example.integratedworkflowmanager.dto.ExecutionStepDto;
+import com.example.integratedworkflowmanager.dto.WorkflowExecutionDto;
 import com.example.integratedworkflowmanager.entity.*;
 import com.example.integratedworkflowmanager.repository.*;
 import com.example.integratedworkflowmanager.service.WorkflowService;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -35,7 +38,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final WorkflowTransactionalService transactionalService;
-
+    private final WorkflowExecutionStepRepository workflowExecutionStepRepository;
 
 
     @Override
@@ -245,5 +248,35 @@ public class WorkflowServiceImpl implements WorkflowService {
                 .build();
         workflowDefinitionRepository.save(definition);
     }
+
+    public List<WorkflowExecutionDto> getExecutionHistory() {
+        List<WorkflowExecution> executions = workflowExecutionRepository.findAll(Sort.by(Sort.Direction.DESC, "executedAt"));
+        List<WorkflowExecutionDto> result = new ArrayList<>();
+
+        for (WorkflowExecution exec : executions) {
+            List<WorkflowExecutionStep> steps = workflowExecutionStepRepository.findByExecution(exec);
+            List<ExecutionStepDto> stepDtos = steps.stream()
+                    .map(step -> ExecutionStepDto.builder()
+                            .nodeId(step.getNodeId())
+                            .nodeName(step.getNodeName())
+                            .requestUrl(step.getRequestUrl())
+                            .skipped(step.isSkipped())
+                            .statusCode(step.getStatusCode() == 0 ? null : step.getStatusCode())
+                            .createdAt(step.getCreatedAt())
+                            .build())
+                    .toList();
+
+            result.add(WorkflowExecutionDto.builder()
+                    .executionId(exec.getExecutionId())
+                    .workflowName(exec.getWorkflowName())
+                    .executedAt(exec.getExecutedAt())
+                    .status(exec.getStatus())
+                    .steps(stepDtos)
+                    .build());
+        }
+
+        return result;
+    }
+
 
 }

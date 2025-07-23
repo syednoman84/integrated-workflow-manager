@@ -1,5 +1,6 @@
 package com.example.integratedworkflowmanager.controller;
 
+import com.example.integratedworkflowmanager.dto.WorkflowExecutionDto;
 import com.example.integratedworkflowmanager.entity.WorkflowDefinition;
 import com.example.integratedworkflowmanager.repository.WorkflowDefinitionRepository;
 import com.example.integratedworkflowmanager.service.WorkflowService;
@@ -125,4 +126,11 @@ public class WorkflowController {
             return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + e.getMessage());
         }
     }
+
+    @GetMapping("/executions")
+    public ResponseEntity<List<WorkflowExecutionDto>> getAllExecutions() {
+        List<WorkflowExecutionDto> executions = workflowService.getExecutionHistory();
+        return ResponseEntity.ok(executions);
+    }
+
 }
