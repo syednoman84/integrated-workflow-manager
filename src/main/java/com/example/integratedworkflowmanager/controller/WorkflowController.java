@@ -2,12 +2,16 @@ package com.example.integratedworkflowmanager.controller;
 
 import com.example.integratedworkflowmanager.dto.WorkflowExecutionDto;
 import com.example.integratedworkflowmanager.entity.WorkflowDefinition;
+import com.example.integratedworkflowmanager.entity.WorkflowExecution;
 import com.example.integratedworkflowmanager.repository.WorkflowDefinitionRepository;
+import com.example.integratedworkflowmanager.repository.WorkflowExecutionRepository;
 import com.example.integratedworkflowmanager.service.WorkflowService;
 import com.example.integratedworkflowmanager.util.WorkflowValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +28,9 @@ import java.util.*;
 public class WorkflowController {
 
     private final WorkflowService workflowService;
-    private final WorkflowDefinitionRepository workflowRepo;
     private final ObjectMapper objectMapper;
+    private final WorkflowDefinitionRepository workflowDefinitionRepository;
+    private final WorkflowExecutionRepository workflowExecutionRepository;
 
     // 🟢 Run a workflow
     @PostMapping("/run/{name}")
@@ -41,7 +46,7 @@ public class WorkflowController {
     @PostMapping
     public ResponseEntity<?> addWorkflow(@RequestBody WorkflowDefinition workflow) {
         try {
-            if (workflowRepo.existsByName(workflow.getName())) {
+            if (workflowDefinitionRepository.existsByName(workflow.getName())) {
                 return ResponseEntity.badRequest().body("Workflow with this name already exists.");
             }
 
@@ -50,7 +55,7 @@ public class WorkflowController {
             WorkflowValidator.validate(workflowJsonNode);
 
             workflow.setCreatedAt(LocalDateTime.now());
-            workflowRepo.save(workflow);
+            workflowDefinitionRepository.save(workflow);
 
             return ResponseEntity.ok("✅ Workflow added.");
         } catch (Exception ex) {
@@ -62,7 +67,7 @@ public class WorkflowController {
     @PutMapping("/{name}")
     public ResponseEntity<?> updateWorkflow(@PathVariable String name, @RequestBody WorkflowDefinition updated) {
         try {
-            WorkflowDefinition existing = workflowRepo.findByName(name)
+            WorkflowDefinition existing = workflowDefinitionRepository.findByName(name)
                     .orElseThrow(() -> new RuntimeException("Workflow not found: " + name));
 
             // 🔍 Validate updated JSON
@@ -70,7 +75,7 @@ public class WorkflowController {
             WorkflowValidator.validate(workflowJsonNode);
 
             existing.setWorkflowJson(updated.getWorkflowJson());
-            workflowRepo.save(existing);
+            workflowDefinitionRepository.save(existing);
 
             return ResponseEntity.ok("✅ Workflow updated.");
         } catch (Exception ex) {
@@ -80,26 +85,36 @@ public class WorkflowController {
 
     // ❌ Delete workflow
     @DeleteMapping("/{name}")
+    @Transactional
     public ResponseEntity<?> deleteWorkflow(@PathVariable String name) {
-        if (!workflowRepo.existsByName(name)) {
+        if (!workflowDefinitionRepository.existsByName(name)) {
             return ResponseEntity.notFound().build();
         }
-        workflowRepo.deleteByName(name);
-        return ResponseEntity.ok("Workflow deleted.");
+
+        boolean isUsedInExecutions = workflowExecutionRepository.existsByWorkflowName(name);
+        if (isUsedInExecutions) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("❌ Cannot delete workflow '" + name + "' because it has been used in past executions.");
+        }
+
+        workflowDefinitionRepository.deleteByName(name);
+        return ResponseEntity.ok("✅ Workflow deleted successfully.");
     }
 
+
+
     // 📄 View single workflow
-    @GetMapping("/{name}")
+    @GetMapping("/get/{name}")
     public ResponseEntity<?> getWorkflow(@PathVariable String name) {
-        return workflowRepo.findByName(name)
+        return workflowDefinitionRepository.findByName(name)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // 📋 View all workflow names
-    @GetMapping
+    @GetMapping("/get/all")
     public ResponseEntity<?> listWorkflows() {
-        List<String> names = workflowRepo.findAll()
+        List<String> names = workflowDefinitionRepository.findAll()
                 .stream()
                 .map(WorkflowDefinition::getName)
                 .toList();
