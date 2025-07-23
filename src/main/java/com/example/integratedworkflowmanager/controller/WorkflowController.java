@@ -3,8 +3,10 @@ package com.example.integratedworkflowmanager.controller;
 import com.example.integratedworkflowmanager.dto.WorkflowExecutionDto;
 import com.example.integratedworkflowmanager.entity.WorkflowDefinition;
 import com.example.integratedworkflowmanager.entity.WorkflowExecution;
+import com.example.integratedworkflowmanager.entity.WorkflowExecutionStep;
 import com.example.integratedworkflowmanager.repository.WorkflowDefinitionRepository;
 import com.example.integratedworkflowmanager.repository.WorkflowExecutionRepository;
+import com.example.integratedworkflowmanager.repository.WorkflowExecutionStepRepository;
 import com.example.integratedworkflowmanager.service.WorkflowService;
 import com.example.integratedworkflowmanager.util.WorkflowValidator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,6 +33,7 @@ public class WorkflowController {
     private final ObjectMapper objectMapper;
     private final WorkflowDefinitionRepository workflowDefinitionRepository;
     private final WorkflowExecutionRepository workflowExecutionRepository;
+    private final WorkflowExecutionStepRepository workflowExecutionStepRepository;
 
     // 🟢 Run a workflow
     @PostMapping("/run/{name}")
@@ -142,10 +145,49 @@ public class WorkflowController {
         }
     }
 
+    // Get all executions
     @GetMapping("/executions")
     public ResponseEntity<List<WorkflowExecutionDto>> getAllExecutions() {
         List<WorkflowExecutionDto> executions = workflowService.getExecutionHistory();
         return ResponseEntity.ok(executions);
     }
+
+    // Get single execution
+    @GetMapping("/executions/{executionId}")
+    public ResponseEntity<?> getExecutionById(@PathVariable UUID executionId) {
+        Optional<WorkflowExecution> optionalExecution = workflowExecutionRepository.findById(executionId);
+        if (optionalExecution.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("❌ No execution found with ID: " + executionId);
+        }
+
+        WorkflowExecution execution = optionalExecution.get();
+        List<WorkflowExecutionStep> steps = workflowExecutionStepRepository.findByExecution(execution);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("executionId", execution.getExecutionId());
+        result.put("workflowName", execution.getWorkflowName());
+        result.put("executedAt", execution.getExecutedAt());
+        result.put("status", execution.getStatus());
+
+        List<Map<String, Object>> stepDetails = steps.stream().map(step -> {
+            Map<String, Object> stepMap = new HashMap<>();
+            stepMap.put("nodeId", step.getNodeId());
+            stepMap.put("nodeName", step.getNodeName());
+            stepMap.put("requestUrl", step.getRequestUrl());
+            stepMap.put("requestBody", step.getRequestBody());
+            stepMap.put("requestHeaders", step.getRequestHeaders());
+            stepMap.put("queryParams", step.getQueryParams());
+            stepMap.put("response", step.getResponse());
+            stepMap.put("statusCode", step.getStatusCode());
+            stepMap.put("skipped", step.isSkipped());
+            return stepMap;
+        }).toList();
+
+        result.put("steps", stepDetails);
+
+        return ResponseEntity.ok(result);
+    }
+
 
 }
