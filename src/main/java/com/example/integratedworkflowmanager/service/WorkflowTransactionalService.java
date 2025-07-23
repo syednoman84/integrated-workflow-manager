@@ -37,11 +37,23 @@ public class WorkflowTransactionalService {
         });
     }
 
+    /**
+     * Save a detailed execution step with idempotency support.
+     */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void saveWorkflowStep(
-            WorkflowExecution execution, Integer nodeId, String nodeName, String url,
-            Map<String, Object> body, Map<String, Object> headers, Map<String, Object> query,
-            String response, int statusCode
+            WorkflowExecution execution,
+            Integer nodeId,
+            String nodeName,
+            String url,
+            Map<String, Object> body,
+            Map<String, Object> headers,
+            Map<String, Object> query,
+            String response,
+            int statusCode,
+            String applicationId,
+            String idempotencyKey,
+            boolean skipped
     ) {
         try {
             WorkflowExecutionStep step = WorkflowExecutionStep.builder()
@@ -54,10 +66,25 @@ public class WorkflowTransactionalService {
                     .queryParams(objectMapper.writeValueAsString(query))
                     .response(response)
                     .statusCode(statusCode)
+                    .applicationId(applicationId)
+                    .idempotencyKey(idempotencyKey)
+                    .skipped(skipped)
                     .build();
             stepRepo.save(step);
         } catch (Exception e) {
-            // log internally, don't fail the flow
+            // optionally log error silently
+        }
+    }
+
+    /**
+     * Overloaded version for pre-built step (e.g., for skipped node cases).
+     */
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void saveWorkflowStep(WorkflowExecutionStep step) {
+        try {
+            stepRepo.save(step);
+        } catch (Exception e) {
+            // optionally log error silently
         }
     }
 

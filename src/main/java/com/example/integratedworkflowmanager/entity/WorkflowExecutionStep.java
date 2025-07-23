@@ -53,4 +53,14 @@ public class WorkflowExecutionStep {
         this.createdAt = LocalDateTime.now();
     }
 
+    @Column(name = "idempotency_key")
+    private String idempotencyKey;
+
+    @Column(name = "application_id")
+    private String applicationId;
+
+    @Column(name = "skipped")
+    private boolean skipped;
+
+
 }

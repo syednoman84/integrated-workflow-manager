@@ -9,4 +9,10 @@ import java.util.UUID;
 
 public interface WorkflowExecutionStepRepository extends JpaRepository<WorkflowExecutionStep, UUID> {
     List<WorkflowExecutionStep> findByExecution(WorkflowExecution execution);
+    boolean existsByApplicationIdAndExecution_WorkflowNameAndNodeNameAndSkippedFalse(
+            String applicationId,
+            String workflowName,
+            String nodeName
+    );
+
 }

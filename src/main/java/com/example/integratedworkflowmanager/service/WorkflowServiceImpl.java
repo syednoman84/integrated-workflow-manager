@@ -42,6 +42,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     public Map<String, Object> runWorkflow(String workflowName, Map<String, Object> inputParams) {
         Map<String, Object> context = new HashMap<>(inputParams);
         Map<String, Object> resultMap = new HashMap<>();
+        String applicationId = (String) inputParams.get("applicationId"); // assume it's passed in payload
 
         WorkflowExecution execution = WorkflowExecution.builder()
                 .workflowName(workflowName)
@@ -69,6 +70,36 @@ public class WorkflowServiceImpl implements WorkflowService {
                     continue;
                 }
 
+                // 💡 Check idempotency
+                String rawKey = (String) node.get("idempotency_key");
+                String idempotencyKey = resolveExpressions(rawKey, context); // resolve {{applicationId}} properly
+
+                if (applicationId != null && idempotencyKey != null) {
+                    boolean alreadyExecuted = stepRepository
+                            .existsByApplicationIdAndExecution_WorkflowNameAndNodeNameAndSkippedFalse(
+                                    applicationId,
+                                    workflowName,
+                                    nodeName
+                            );
+
+                    if (alreadyExecuted) {
+                        log.info("Skipping node {} due to idempotencyKey match", nodeName);
+                        transactionalService.saveWorkflowStep(
+                                WorkflowExecutionStep.builder()
+                                        .execution(execution)
+                                        .nodeId(nodeId)
+                                        .nodeName(nodeName)
+                                        .applicationId(applicationId)
+                                        .idempotencyKey(idempotencyKey)
+                                        .skipped(true) // or false if it was actually executed
+                                        .statusCode(0) // if skipped
+                                        .build()
+                        );
+
+                        continue;
+                    }
+                }
+
                 String url = resolveExpressions((String) node.get("request_url"), context);
                 String method = ((String) node.getOrDefault("method", "GET")).toUpperCase();
 
@@ -89,7 +120,20 @@ public class WorkflowServiceImpl implements WorkflowService {
                     response = restTemplate.exchange(url, HttpMethod.valueOf(method), entity, String.class);
                 } catch (Exception ex) {
                     log.error("Node {} failed: {}", nodeName, ex.getMessage());
-                    transactionalService.saveWorkflowStep(execution, nodeId, nodeName, url, body, headers, queryParams, ex.getMessage(), 500);
+                    transactionalService.saveWorkflowStep(WorkflowExecutionStep.builder()
+                            .execution(execution)
+                            .nodeId(nodeId)
+                            .nodeName(nodeName)
+                            .requestUrl(url)
+                            .requestBody(objectMapper.writeValueAsString(body))
+                            .requestHeaders(objectMapper.writeValueAsString(headers))
+                            .queryParams(objectMapper.writeValueAsString(queryParams))
+                            .response(ex.getMessage())
+                            .statusCode(500)
+                            .applicationId(applicationId)
+                            .idempotencyKey(idempotencyKey)
+                            .skipped(false)
+                            .build());
                     transactionalService.updateWorkflowStatus(executionId, "FAIL");
                     resultMap.put("status", "FAIL");
                     resultMap.put("executionId", executionId);
@@ -98,7 +142,20 @@ public class WorkflowServiceImpl implements WorkflowService {
 
                 String responseBody = response.getBody();
                 context.put(nodeName, objectMapper.readValue(responseBody, Object.class));
-                transactionalService.saveWorkflowStep(execution, nodeId, nodeName, url, body, headers, queryParams, responseBody, response.getStatusCodeValue());
+                transactionalService.saveWorkflowStep(WorkflowExecutionStep.builder()
+                        .execution(execution)
+                        .nodeId(nodeId)
+                        .nodeName(nodeName)
+                        .requestUrl(url)
+                        .requestBody(objectMapper.writeValueAsString(body))
+                        .requestHeaders(objectMapper.writeValueAsString(headers))
+                        .queryParams(objectMapper.writeValueAsString(queryParams))
+                        .response(responseBody)
+                        .statusCode(response.getStatusCodeValue())
+                        .applicationId(applicationId)
+                        .idempotencyKey(idempotencyKey)
+                        .skipped(false)
+                        .build());
             }
 
             transactionalService.updateWorkflowStatus(executionId, "SUCCESS");
@@ -112,6 +169,7 @@ public class WorkflowServiceImpl implements WorkflowService {
             transactionalService.updateWorkflowStatus(executionId, "FAIL");
             resultMap.put("status", "FAIL");
             resultMap.put("executionId", executionId);
+            resultMap.put("error", ex.getMessage());
             return resultMap;
         }
     }
