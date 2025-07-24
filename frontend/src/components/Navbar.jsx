@@ -4,7 +4,7 @@ import "./Navbar.css";
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">Workflow Manager</div>
+      <Link to="/" className="logo">Workflow Manager</Link>
 
       <div className="dropdown">
         <button className="dropbtn">Workflows</button>
@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className="dropdown-content">
           <Link to="/executions/view">View Execution</Link>
           <Link to="/executions/view-all">View All Executions</Link>
-        <Link to="/executions/run">Run Workflow</Link>
+          <Link to="/executions/run">Run Workflow</Link>
         </div>
       </div>
     </nav>

@@ -9,13 +9,15 @@ import ViewWorkflowByName from "./components/workflows/ViewWorkflowByName";
 import ViewExecution from "./components/executions/ViewExecution";
 import ViewAllExecutions from "./components/executions/ViewAllExecutions";
 import RunWorkflow from "./components/executions/RunWorkflow";
-
+import Home from "./components/Home";
+import './App.css';
 
 export default function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/workflows/add" element={<AddWorkflow />} />
         <Route path="/workflows/update" element={<UpdateWorkflow />}/>
         <Route path="/workflows/delete" element={<DeleteWorkflow />}/>

@@ -67,7 +67,7 @@ export default function AddWorkflow() {
                         required
                     />
                 </div>
-                <button type="submit">Submit JSON</button>
+                <button type="submit">Add Workflow</button>
             </form>
 
             <form onSubmit={handleFileSubmit}>
@@ -80,7 +80,7 @@ export default function AddWorkflow() {
                         required
                     />
                 </div>
-                <button type="submit">Upload File</button>
+                <button type="submit">Upload Workflow</button>
             </form>
 
             {message && <p style={{ marginTop: "1rem", color: "darkblue" }}>{message}</p>}
