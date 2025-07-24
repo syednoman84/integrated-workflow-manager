@@ -5,6 +5,7 @@ import UpdateWorkflow from "./components/workflows/UpdateWorkflow";
 import DeleteWorkflow from "./components/workflows/DeleteWorkflow";
 import ViewAllWorkflow from "./components/workflows/ViewAllWorkflows";
 import ViewWorkflow from "./components/workflows/ViewWorkflow";
+import ViewWorkflowByName from "./components/workflows/ViewWorkflowByName";
 import ViewExecution from "./components/executions/ViewExecution";
 import ViewAllExecutions from "./components/executions/ViewAllExecutions";
 import RunWorkflow from "./components/executions/RunWorkflow";
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/executions/view" element={<ViewExecution />}/>
         <Route path="/executions/view-all" element={<ViewAllExecutions />}/>
         <Route path="/executions/run" element={<RunWorkflow />}/>
+        <Route path="/workflows/view/:name" element={<ViewWorkflowByName />} />
       </Routes>
     </Router>
   );
