@@ -125,8 +125,8 @@ public class WorkflowController {
     }
 
     // Upload workflow via file
-    @PostMapping("/fileupload")
-    public ResponseEntity<?> uploadWorkflow(@RequestParam("name") String name,
+    @PostMapping("/fileuploadold")
+    public ResponseEntity<?> uploadWorkflowOld(@RequestParam("name") String name,
                                             @RequestParam("file") MultipartFile file) {
         try {
             String workflowJson = new String(file.getBytes(), StandardCharsets.UTF_8);
@@ -144,6 +144,33 @@ public class WorkflowController {
             return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + e.getMessage());
         }
     }
+
+    @PostMapping("/fileupload")
+    public ResponseEntity<?> uploadWorkflow(@RequestParam("file") MultipartFile file) {
+        try {
+            String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(fileContent);
+
+            String name = root.path("name").asText(null);
+            JsonNode workflowJsonNode = root.path("workflowJson");
+
+            if (name == null || name.isBlank()) {
+                return ResponseEntity.badRequest().body("❌ 'name' field is required in the file.");
+            }
+
+            WorkflowValidator.validate(workflowJsonNode); // throws if invalid
+
+            // Delegate to service
+            workflowService.saveWorkflowFromJsonFile(name, workflowJsonNode.toString());
+
+            return ResponseEntity.ok("✅ Workflow uploaded successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + e.getMessage());
+        }
+    }
+
 
     // Get all executions
     @GetMapping("/executions")
