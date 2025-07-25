@@ -6,6 +6,8 @@ import com.example.integratedworkflowmanager.entity.*;
 import com.example.integratedworkflowmanager.repository.*;
 import com.example.integratedworkflowmanager.service.WorkflowService;
 import com.example.integratedworkflowmanager.util.ExpressionUtils;
+import com.example.integratedworkflowmanager.util.MathUtils;
+import com.example.integratedworkflowmanager.util.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -230,6 +232,8 @@ public class WorkflowServiceImpl implements WorkflowService {
     private Map<String, Object> createMvelContext(Map<String, Object> inputContext) {
         Map<String, Object> context = new HashMap<>(inputContext);
         context.put("base64", ExpressionUtils.class);
+        context.put("math", MathUtils.class);
+        context.put("stringUtils", StringUtils.class);
         return context;
     }
 

@@ -1,0 +1,54 @@
+{
+  "name": "workflow1",
+  "workflowJson": {
+    "nodes": [
+      {
+        "id": 1,
+        "name": "authToken",
+        "request_url": "http://localhost:8089/post",
+        "method": "POST",
+        "request_body": {
+          "username": "demo",
+          "password": "demo123"
+        },
+        "request_headers": {},
+        "query_params": {},
+        "condition": "true"
+      },
+      {
+        "id": 2,
+        "name": "getUser",
+        "request_url": "http://localhost:8089/users/1",
+        "method": "GET",
+        "request_body": {},
+        "request_headers": {},
+        "query_params": {},
+        "condition": "true"
+      },
+      {
+        "id": 3,
+        "name": "getUserProfile",
+        "request_url": "http://localhost:8089/get",
+        "method": "GET",
+        "request_body": {},
+        "request_headers": {
+          "Authorization": "{{'Bearer ' + authToken.token}}"
+        },
+        "query_params": {},
+        "condition": "true"
+      },
+      {
+        "id": 4,
+        "name": "getInternalData",
+        "request_url": "http://localhost:8089/basic-auth/demo/pass",
+        "method": "GET",
+        "request_body": {},
+        "request_headers": {
+          "Authorization": "{{ 'Basic ' + base64.base64('demo:pass') }}"
+        },
+        "query_params": {},
+        "condition": "true"
+      }
+    ]
+  }
+}

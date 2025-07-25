@@ -1,0 +1,25 @@
+{
+    "name": "custommvel",
+    "workflowJson": {
+        "nodes": [
+            {
+                "id": 1,
+                "name": "getUser",
+                "request_url": "http://localhost:8089/api/user",
+                "request_body": {},
+                "request_headers": {},
+                "query_params": {},
+                "condition": "true"
+            },
+            {
+                "id": 2,
+                "name": "calculateEligibility",
+                "request_url": "{{ 'http://localhost:8089/eligibility/' + math.max(getUser.age, 18) }}",
+                "request_body": {},
+                "request_headers": {},
+                "query_params": {},
+                "condition": "true"
+            }
+        ]
+    }
+}
