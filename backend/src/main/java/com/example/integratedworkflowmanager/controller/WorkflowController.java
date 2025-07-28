@@ -11,6 +11,8 @@ import com.example.integratedworkflowmanager.service.WorkflowService;
 import com.example.integratedworkflowmanager.util.WorkflowValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/workflows")
 @RequiredArgsConstructor
+@Tag(name = "Workflow Controllers", description = "APIs for managing and running workflows")
 public class WorkflowController {
 
     private final WorkflowService workflowService;
@@ -37,6 +40,7 @@ public class WorkflowController {
 
     // 🟢 Run a workflow
     @PostMapping("/run/{name}")
+    @Operation(summary = "Run a workflow by name")
     public ResponseEntity<?> runWorkflow(
             @PathVariable String name,
             @RequestBody(required = false) Map<String, Object> input
@@ -47,6 +51,7 @@ public class WorkflowController {
 
     // ➕ Add a new workflow
     @PostMapping
+    @Operation(summary = "Add a new workflow")
     public ResponseEntity<?> addWorkflow(@RequestBody WorkflowDefinition workflow) {
         try {
             if (workflowDefinitionRepository.existsByName(workflow.getName())) {
@@ -68,6 +73,7 @@ public class WorkflowController {
 
     // Update existing workflow
     @PutMapping("/{name}")
+    @Operation(summary = "Update a workflow by name")
     public ResponseEntity<?> updateWorkflow(@PathVariable String name, @RequestBody WorkflowDefinition updated) {
         try {
             WorkflowDefinition existing = workflowDefinitionRepository.findByName(name)
@@ -88,6 +94,7 @@ public class WorkflowController {
 
     // ❌ Delete workflow
     @DeleteMapping("/{name}")
+    @Operation(summary = "Delete a workflow by name")
     @Transactional
     public ResponseEntity<?> deleteWorkflow(@PathVariable String name) {
         if (!workflowDefinitionRepository.existsByName(name)) {
@@ -108,6 +115,7 @@ public class WorkflowController {
 
     // 📄 View single workflow
     @GetMapping("/get/{name}")
+    @Operation(summary = "Get a single workflow by name")
     public ResponseEntity<?> getWorkflow(@PathVariable String name) {
         return workflowDefinitionRepository.findByName(name)
                 .map(ResponseEntity::ok)
@@ -116,6 +124,7 @@ public class WorkflowController {
 
     // 📋 View all workflow names
     @GetMapping("/get/all")
+    @Operation(summary = "Get all workflows by name")
     public ResponseEntity<?> listWorkflows() {
         List<String> names = workflowDefinitionRepository.findAll()
                 .stream()
@@ -124,28 +133,8 @@ public class WorkflowController {
         return ResponseEntity.ok(names);
     }
 
-    // Upload workflow via file
-    @PostMapping("/fileuploadold")
-    public ResponseEntity<?> uploadWorkflowOld(@RequestParam("name") String name,
-                                            @RequestParam("file") MultipartFile file) {
-        try {
-            String workflowJson = new String(file.getBytes(), StandardCharsets.UTF_8);
-
-            // 🔍 Validate workflow JSON
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode workflowJsonNode = mapper.readTree(workflowJson);
-            WorkflowValidator.validate(workflowJsonNode); // throws if invalid
-
-            // Save after validation
-            workflowService.saveWorkflowFromJsonFile(name, workflowJson);
-
-            return ResponseEntity.ok("✅ Workflow uploaded successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Invalid workflow JSON: " + e.getMessage());
-        }
-    }
-
     @PostMapping("/fileupload")
+    @Operation(summary = "Add a new workflow using json file upload")
     public ResponseEntity<?> uploadWorkflow(@RequestParam("file") MultipartFile file) {
         try {
             String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
@@ -174,6 +163,7 @@ public class WorkflowController {
 
     // Get all executions
     @GetMapping("/executions")
+    @Operation(summary = "Get all executions")
     public ResponseEntity<List<WorkflowExecutionDto>> getAllExecutions() {
         List<WorkflowExecutionDto> executions = workflowService.getExecutionHistory();
         return ResponseEntity.ok(executions);
@@ -181,6 +171,7 @@ public class WorkflowController {
 
     // Get single execution
     @GetMapping("/executions/{executionId}")
+    @Operation(summary = "Get a single execution by executionId")
     public ResponseEntity<?> getExecutionById(@PathVariable UUID executionId) {
         Optional<WorkflowExecution> optionalExecution = workflowExecutionRepository.findById(executionId);
         if (optionalExecution.isEmpty()) {
