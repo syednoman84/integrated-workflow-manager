@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+
 import api from "../../axiosConfig";
 
 export default function ViewAllExecutions() {
     const [executions, setExecutions] = useState([]);
     const [selectedExecution, setSelectedExecution] = useState(null);
     const [error, setError] = useState("");
+    const detailsRef = useRef(null);
 
     useEffect(() => {
         const fetchExecutions = async () => {
@@ -23,6 +25,13 @@ export default function ViewAllExecutions() {
         try {
             const response = await api.get(`/workflows/executions/${executionId}`);
             setSelectedExecution(response.data);
+
+            // Auto-scroll after slight delay to ensure DOM updates
+            setTimeout(() => {
+                if (detailsRef.current) {
+                    detailsRef.current.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 100); // 100ms delay
         } catch (err) {
             setError("❌ Failed to load execution details.");
         }
@@ -60,13 +69,21 @@ export default function ViewAllExecutions() {
             </table>
 
             {selectedExecution && (
-                <div style={{ backgroundColor: "#f4f4f4", padding: "1rem", borderRadius: "8px" }}>
+                <div
+                    ref={detailsRef}
+                    style={{
+                        backgroundColor: "#f4f4f4",
+                        padding: "1rem",
+                        borderRadius: "8px",
+                    }}
+                >
                     <h3>Execution Details</h3>
                     <pre style={{ whiteSpace: "pre-wrap" }}>
                         {JSON.stringify(selectedExecution, null, 2)}
                     </pre>
                 </div>
             )}
+
         </div>
     );
 }
