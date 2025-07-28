@@ -154,4 +154,71 @@ curl -s -X POST http://localhost:8089/__admin/mappings \
     }
   }'
 
+# 8. User api for testing custom eval function max
+
+curl -s -X POST http://localhost:8089/__admin/mappings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request": {
+      "method": "GET",
+      "url": "/api/user"
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "jsonBody": {
+        "name": "John Doe",
+        "age": 21
+      }
+    }
+  }'
+
+# 9. Eligibility api for testing custom eval function max
+
+curl -s -X POST http://localhost:8089/__admin/mappings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request": {
+      "method": "GET",
+      "urlPattern": "/eligibility/.*"
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "jsonBody": {
+        "eligible": true,
+        "message": "Age is eligible."
+      }
+    }
+  }'
+
+# 10. Substring api for testing custom StringUtils of mvel
+
+curl -s -X POST http://localhost:8089/__admin/mappings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request": {
+      "method": "POST",
+      "url": "/api/check-substring",
+      "bodyPatterns": [
+        {
+          "matchesJsonPath": "$[?(@.prefix == \"John\")]"
+        }
+      ]
+    },
+    "response": {
+      "status": 200,
+      "jsonBody": {
+        "result": "Substring matched successfully!"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  }'
+
 echo "✅ WireMock stubs registered successfully!"

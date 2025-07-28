@@ -62,5 +62,8 @@ public class WorkflowExecutionStep {
     @Column(name = "skipped")
     private boolean skipped;
 
+    private int attemptCount;
+
+
 
 }

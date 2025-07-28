@@ -120,48 +120,68 @@ public class WorkflowServiceImpl implements WorkflowService {
                 headers.forEach((k, v) -> httpHeaders.set(k, v.toString()));
                 HttpEntity<?> entity = new HttpEntity<>(body.isEmpty() ? null : body, httpHeaders);
 
-                ResponseEntity<String> response;
-                try {
-                    response = restTemplate.exchange(url, HttpMethod.valueOf(method), entity, String.class);
-                } catch (Exception ex) {
-                    log.error("Node {} failed: {}", nodeName, ex.getMessage());
-                    transactionalService.saveWorkflowStep(WorkflowExecutionStep.builder()
-                            .execution(execution)
-                            .nodeId(nodeId)
-                            .nodeName(nodeName)
-                            .requestUrl(url)
-                            .requestBody(objectMapper.writeValueAsString(body))
-                            .requestHeaders(objectMapper.writeValueAsString(headers))
-                            .queryParams(objectMapper.writeValueAsString(queryParams))
-                            .response(ex.getMessage())
-                            .statusCode(500)
-                            .applicationId(applicationId)
-                            .idempotencyKey(idempotencyKey)
-                            .skipped(false)
-                            .build());
-                    transactionalService.updateWorkflowStatus(executionId, "FAIL");
-                    resultMap.put("status", "FAIL");
-                    resultMap.put("executionId", executionId);
-                    return resultMap;
-                }
+                Integer maxRetries = (Integer) node.getOrDefault("retry", 0);
+                int attempt = 0;
+                boolean success = false;
 
-                String responseBody = response.getBody();
-                context.put(nodeName, objectMapper.readValue(responseBody, Object.class));
-                transactionalService.saveWorkflowStep(WorkflowExecutionStep.builder()
-                        .execution(execution)
-                        .nodeId(nodeId)
-                        .nodeName(nodeName)
-                        .requestUrl(url)
-                        .requestBody(objectMapper.writeValueAsString(body))
-                        .requestHeaders(objectMapper.writeValueAsString(headers))
-                        .queryParams(objectMapper.writeValueAsString(queryParams))
-                        .response(responseBody)
-                        .statusCode(response.getStatusCodeValue())
-                        .applicationId(applicationId)
-                        .idempotencyKey(idempotencyKey)
-                        .skipped(false)
-                        .build());
-            }
+                while (attempt <= maxRetries && !success) {
+                    attempt++;
+
+                    try {
+                        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.valueOf(method), entity, String.class);
+                        String responseBody = response.getBody();
+                        context.put(nodeName, objectMapper.readValue(responseBody, Object.class));
+
+                        transactionalService.saveWorkflowStep(
+                                WorkflowExecutionStep.builder()
+                                        .execution(execution)
+                                        .nodeId(nodeId)
+                                        .nodeName(nodeName)
+                                        .requestUrl(url)
+                                        .requestBody(objectMapper.writeValueAsString(body))
+                                        .requestHeaders(objectMapper.writeValueAsString(headers))
+                                        .queryParams(objectMapper.writeValueAsString(queryParams))
+                                        .response(responseBody)
+                                        .statusCode(response.getStatusCodeValue())
+                                        .applicationId(applicationId)
+                                        .idempotencyKey(idempotencyKey)
+                                        .skipped(false)
+                                        .attemptCount(attempt)
+                                        .build()
+                        );
+
+                        success = true;
+                    } catch (Exception ex) {
+                        log.warn("Attempt {} failed for node {}: {}", attempt, nodeName, ex.getMessage());
+
+                        transactionalService.saveWorkflowStep(
+                                WorkflowExecutionStep.builder()
+                                        .execution(execution)
+                                        .nodeId(nodeId)
+                                        .nodeName(nodeName)
+                                        .requestUrl(url)
+                                        .requestBody(objectMapper.writeValueAsString(body))
+                                        .requestHeaders(objectMapper.writeValueAsString(headers))
+                                        .queryParams(objectMapper.writeValueAsString(queryParams))
+                                        .response(ex.getMessage())
+                                        .statusCode(500)
+                                        .applicationId(applicationId)
+                                        .idempotencyKey(idempotencyKey)
+                                        .skipped(false)
+                                        .attemptCount(attempt)
+                                        .build()
+                        );
+
+                        if (attempt > maxRetries) {
+                            transactionalService.updateWorkflowStatus(executionId, "FAIL");
+                            resultMap.put("status", "FAIL");
+                            resultMap.put("executionId", executionId);
+                            return resultMap;
+                        }
+                }
+}
+
+            } // for loop ends
 
             transactionalService.updateWorkflowStatus(executionId, "SUCCESS");
             resultMap.put("status", "SUCCESS");
