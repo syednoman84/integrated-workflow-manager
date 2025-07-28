@@ -59,7 +59,16 @@ export default function ViewAllExecutions() {
                             <td>{exe.executionId}</td>
                             <td>{exe.workflowName}</td>
                             <td>{exe.executedAt}</td>
-                            <td>{exe.status}</td>
+                            <td>
+                                <span
+                                    style={{
+                                        color: exe.status === "SUCCESS" ? "green" : "red",
+                                        fontWeight: "bold"
+                                    }}
+                                >
+                                    {exe.status}
+                                </span>
+                            </td>
                             <td>
                                 <button onClick={() => handleView(exe.executionId)}>View</button>
                             </td>
