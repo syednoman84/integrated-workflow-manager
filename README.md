@@ -188,6 +188,24 @@ If the key has already been executed for that application, the node is skipped (
 
 ---
 
+## Screenshots
+
+<img width="1395" height="671" alt="image" src="https://github.com/user-attachments/assets/d3977af7-ce39-4613-80ca-1e0dd53205dc" />
+<img width="909" height="398" alt="image" src="https://github.com/user-attachments/assets/80618416-6992-4e92-9fa3-371754714a7c" />
+<img width="1280" height="656" alt="image" src="https://github.com/user-attachments/assets/3a2a0378-5d17-4c9d-bc57-ebdb6927b6b8" />
+<img width="1319" height="611" alt="image" src="https://github.com/user-attachments/assets/5a4a7b16-c3f5-4754-ae51-d79f29ec13b4" />
+<img width="1378" height="365" alt="image" src="https://github.com/user-attachments/assets/e1df22cd-9e07-4d05-830f-5820c216aafc" />
+<img width="1338" height="329" alt="image" src="https://github.com/user-attachments/assets/1789f707-cc39-481b-85a9-7f7f96673a53" />
+<img width="1277" height="670" alt="image" src="https://github.com/user-attachments/assets/704d7566-01d8-4f01-b6e4-796c6cc70618" />
+<img width="1348" height="711" alt="image" src="https://github.com/user-attachments/assets/4c436ceb-2b49-4108-a98d-087d40145703" />
+<img width="1382" height="593" alt="image" src="https://github.com/user-attachments/assets/0ab4898b-5f11-412f-946c-4f1429543c08" />
+<img width="1367" height="739" alt="image" src="https://github.com/user-attachments/assets/3c3322d7-b293-4cfb-bea2-387c88813cca" />
+<img width="1388" height="733" alt="image" src="https://github.com/user-attachments/assets/9b4fb7e4-c5fa-4a9a-9efe-0d025f55a019" />
+<img width="1378" height="736" alt="image" src="https://github.com/user-attachments/assets/0c540b8a-c828-403b-a6e8-c13ea550b118" />
+<img width="1402" height="604" alt="image" src="https://github.com/user-attachments/assets/ed21b453-7aa7-48c1-ba79-20d103098eae" />
+
+---
+
 ## ✉️ Contributions
 
 Open to feedback, enhancements, and pull requests!
