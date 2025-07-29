@@ -26,6 +26,19 @@ A lightweight, pluggable workflow orchestration engine built with **Spring Boot*
 - Run: `./mvnw spring-boot:run`
 - Swagger UI: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
+#### Dependencies
+| Dependency | Description |
+|------------|-------------|
+| **Spring Boot Starter Web** | RESTful API support |
+| **Spring Boot Starter Data JPA** | Database ORM (Hibernate) |
+| **MySQL Connector/J** | Connects Spring to MySQL |
+| **Jackson Databind** | JSON serialization/deserialization |
+| **Lombok** | Reduces boilerplate Java code |
+| **MVEL 2** | Dynamic expression evaluation engine |
+| **SpringDoc OpenAPI UI** | Swagger UI for API documentation |
+| **JUnit Jupiter** | JUnit 5 testing framework |
+| **Spring Boot Starter Test** | Includes testing utilities like Mockito, AssertJ |
+
 ### Frontend
 
 - React + Axios
