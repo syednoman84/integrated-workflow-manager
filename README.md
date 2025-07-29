@@ -206,11 +206,5 @@ If the key has already been executed for that application, the node is skipped (
 
 ---
 
-## ✉️ Contributions
-
-Open to feedback, enhancements, and pull requests!
-
----
-
 Happy Workflowing! ✨
 
