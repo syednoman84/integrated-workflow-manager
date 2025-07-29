@@ -382,4 +382,5 @@ curl -X POST http://localhost:8089/validate-user \
 
 
 
-
+DELETE AN ENDPOINT FROM WIREMOCK:
+curl -X DELETE http://localhost:8089/__admin/mappings/42c6da3b-54d0-4bbd-ba1d-287f4c1d6121
