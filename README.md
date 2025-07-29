@@ -212,11 +212,5 @@ Open to feedback, enhancements, and pull requests!
 
 ---
 
-## 🚩 License
-
-MIT License
-
----
-
 Happy Workflowing! ✨
 
