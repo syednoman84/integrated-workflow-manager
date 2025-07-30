@@ -14,7 +14,7 @@ public class FunctionRegistry {
         context.put("base64", ExpressionUtils.class);
         context.put("math", MathUtils.class);
         context.put("stringUtils", StringUtils.class);
-    
+
         // MVELFunction (Single-arg)
         context.put("toUpper", (MVELFunction<String, String>) String::toUpperCase);
         context.put("trim", (MVELFunction<String, String>) String::trim);

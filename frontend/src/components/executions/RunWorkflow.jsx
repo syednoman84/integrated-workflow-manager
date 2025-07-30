@@ -3,22 +3,32 @@ import api from "../../axiosConfig";
 
 export default function RunWorkflow() {
   const [workflowName, setWorkflowName] = useState("");
-  const [applicationId, setApplicationId] = useState("");
+  const [payload, setPayload] = useState("{}");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
 
   const handleRun = async (e) => {
-    e.preventDefault();
-    setError("");
-    setResponse(null);
-    try {
-      const payload = { applicationId };
-      const res = await api.post(`/workflows/run/${workflowName}`, payload);
-      setResponse(res.data);
-    } catch (err) {
+  e.preventDefault();
+  setError("");
+  setResponse(null);
+
+  try {
+    const parsedPayload = JSON.parse(payload); 
+    const res = await api.post(`/workflows/run/${workflowName}`, parsedPayload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setResponse(res.data);
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      setError("❌ Invalid JSON format in payload.");
+    } else {
       setError(err.response?.data || err.message);
     }
-  };
+  }
+};
+
 
   return (
     <div className="container">
@@ -34,12 +44,13 @@ export default function RunWorkflow() {
           />
         </div>
         <div>
-          <label>Application ID:</label>
-          <input
-            type="text"
-            value={applicationId}
-            onChange={(e) => setApplicationId(e.target.value)}
-            required
+          <label>Payload:</label>
+          <textarea
+            value={payload}
+            onChange={(e) => setPayload(e.target.value)}
+            rows="10"
+            cols="80"
+            
           />
         </div>
         <button type="submit">Run</button>
