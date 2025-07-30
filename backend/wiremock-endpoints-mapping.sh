@@ -221,4 +221,93 @@ curl -s -X POST http://localhost:8089/__admin/mappings \
     }
   }'
 
+  # 11. /api/user/details
+
+  curl -s -X POST http://localhost:8089/__admin/mappings \
+    -H "Content-Type: application/json" \
+    -d '{
+            "request": {
+              "method": "POST",
+              "url": "/api/user/details"
+            },
+            "response": {
+              "status": 200,
+              "body": "{\"name\":\"John Doe\", \"age\":28, \"id\":\"U123\"}",
+              "headers": { "Content-Type": "application/json" }
+            }
+          }'
+
+  # 12. /api/credit/score\\?userId=.+
+
+  curl -s -X POST http://localhost:8089/__admin/mappings \
+    -H "Content-Type: application/json" \
+    -d '{
+            "request": {
+              "method": "GET",
+              "urlPattern": "/api/credit/score\\?userId=.+"
+            },
+            "response": {
+              "status": 200,
+              "body": "{\"score1\": 720, \"score2\": 690}",
+              "headers": { "Content-Type": "application/json" }
+            }
+          }'
+
+  # 13. /api/loan/decision
+
+  curl -s -X POST http://localhost:8089/__admin/mappings \
+    -H "Content-Type: application/json" \
+    -d '{
+            "request": {
+              "method": "POST",
+              "url": "/api/loan/decision"
+            },
+            "response": {
+              "status": 200,
+              "body": "{\"decision\": \"APPROVED\"}",
+              "headers": { "Content-Type": "application/json" }
+            }
+          }'
+
+# 14. /internal/score/compute
+
+  curl -s -X POST http://localhost:8089/__admin/mappings \
+    -H "Content-Type: application/json" \
+    -d '{
+          "request": {
+            "method": "POST",
+            "url": "/internal/score/compute"
+          },
+          "response": {
+            "status": 200,
+            "jsonBody": {
+              "average": 705,
+              "minAllowed": 690
+            },
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        }'
+
+# 15. /internal/log/userId
+
+  curl -s -X POST http://localhost:8089/__admin/mappings \
+    -H "Content-Type: application/json" \
+    -d '{
+          "request": {
+            "method": "POST",
+            "url": "/internal/log/userId"
+          },
+          "response": {
+            "status": 200,
+            "jsonBody": {
+              "logStatus": "SUCCESS"
+            },
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        }'
+
 echo "✅ WireMock stubs registered successfully!"

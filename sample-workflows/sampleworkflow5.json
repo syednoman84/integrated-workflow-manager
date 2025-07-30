@@ -1,0 +1,26 @@
+{
+  "name": "complexWorkflow",
+  "workflowJson": {
+  "nodes": [
+    {
+      "id": 1,
+      "name": "LoanCheck",
+      "request_url": "http://localhost:8089/loan-check/{{userId}}",
+      "method": "GET",
+      "request_headers": {
+        "X-Request-ID": "{{requestId}}"
+      },
+      "query_params": {
+        "amount": "{{loanAmount}}"
+      }
+    },
+    {
+      "id": 2,
+      "name": "RiskAssessment",
+      "condition": "LoanCheck.limit >= loanAmount",
+      "request_url": "http://localhost:8089/risk-check/{{userId}}",
+      "method": "GET"
+    }
+  ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "loan-approval-advanced",
+    "workflowJson":{
+  "nodes": [
+    {
+      "id": 1,
+      "name": "GetUserDetails",
+      "method": "POST",
+      "request_url": "http://localhost:8089/api/user/details",
+      "request_body": {
+        "applicationId": "{{applicationId}}"
+      }
+    },
+    {
+      "id": 2,
+      "name": "GetCreditScores",
+      "method": "GET",
+      "condition": "GetUserDetails != null && isEven.apply(GetUserDetails.age)",
+      "request_url": "http://localhost:8089/api/credit/score",
+      "query_params": {
+        "userId": "{{GetUserDetails.id}}"
+      }
+    },
+    {
+      "id": 3,
+      "name": "ComputeAverageScore",
+      "method": "POST",
+      "condition": "GetCreditScores != null && GetCreditScores.score1 != null",
+      "request_url": "http://localhost:8089/internal/score/compute",
+      "request_body": {
+      "average": "{{avg.apply({GetCreditScores.score1, GetCreditScores.score2})}}",
+      "minAllowed": "{{math.min(GetCreditScores.score1, GetCreditScores.score2)}}"
+      }
+    },
+    {
+      "id": 4,
+      "name": "PrepareUserId",
+      "method": "POST",
+      "request_url": "http://localhost:8089/internal/log/userId",
+      "request_body": {
+        "padded": "{{padString.apply(GetUserDetails.id, '0', 10)}}"
+      }
+    },
+    {
+  "id": 5,
+  "name": "LoanDecision",
+  "method": "POST",
+  "condition": "ComputeAverageScore != null && ComputeAverageScore.average >= 700",
+  "request_url": "http://localhost:8089/api/loan/decision",
+  "request_body": {
+    "applicant": "{{GetUserDetails.name}}",
+    "averageScore": "{{ComputeAverageScore.average}}"
+  }
+}
+  ]
+}}

@@ -381,6 +381,12 @@ curl -X POST http://localhost:8089/validate-user \
   -d '{"userId": "12345", "loanAmount": 5000}'
 
 
+curl -X POST http://localhost:8089/api/user/details \
+  -H "Content-Type: application/json" \
+  -d '{"applicationId": "BOO123"}'
+
+
+
 
 DELETE AN ENDPOINT FROM WIREMOCK:
 curl -X DELETE http://localhost:8089/__admin/mappings/42c6da3b-54d0-4bbd-ba1d-287f4c1d6121

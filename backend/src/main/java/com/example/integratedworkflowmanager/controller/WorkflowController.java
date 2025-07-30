@@ -180,7 +180,7 @@ public class WorkflowController {
         }
 
         WorkflowExecution execution = optionalExecution.get();
-        List<WorkflowExecutionStep> steps = workflowExecutionStepRepository.findByExecution(execution);
+        List<WorkflowExecutionStep> steps = workflowExecutionStepRepository.findByExecutionOrderByNodeIdAsc(execution);
 
         Map<String, Object> result = new HashMap<>();
         result.put("executionId", execution.getExecutionId());
@@ -199,6 +199,7 @@ public class WorkflowController {
             stepMap.put("response", step.getResponse());
             stepMap.put("statusCode", step.getStatusCode());
             stepMap.put("skipped", step.isSkipped());
+            stepMap.put("createdAt", step.getCreatedAt());
             return stepMap;
         }).toList();
 
