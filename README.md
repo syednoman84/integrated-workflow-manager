@@ -215,7 +215,7 @@ If the key has already been executed for that application, the node is skipped (
 <img width="1367" height="739" alt="image" src="https://github.com/user-attachments/assets/3c3322d7-b293-4cfb-bea2-387c88813cca" />
 <img width="1388" height="733" alt="image" src="https://github.com/user-attachments/assets/9b4fb7e4-c5fa-4a9a-9efe-0d025f55a019" />
 <img width="1378" height="736" alt="image" src="https://github.com/user-attachments/assets/0c540b8a-c828-403b-a6e8-c13ea550b118" />
-<img width="1402" height="604" alt="image" src="https://github.com/user-attachments/assets/ed21b453-7aa7-48c1-ba79-20d103098eae" />
+<img width="1239" height="718" alt="image" src="https://github.com/user-attachments/assets/82937845-23aa-4ebe-b408-4476a7ee8921" />
 
 ---
 
