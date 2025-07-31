@@ -1,0 +1,796 @@
+{
+	"info": {
+		"_postman_id": "2f1c3551-c0d1-47f7-a108-a1cb40ca5b81",
+		"name": "integrated-workflow-manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13380147"
+	},
+	"item": [
+		{
+			"name": "getAllExecutions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/executions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"executions"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "getSingleExecution",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/executions/e539a30d-ee06-4d27-9238-c5bddc17f4b6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"executions",
+						"e539a30d-ee06-4d27-9238-c5bddc17f4b6"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "getSingleWorkflow",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/get/sampleWorkflowWithIdempotencyKey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"get",
+						"sampleWorkflowWithIdempotencyKey"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "getAllWorkflows",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/get/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"get",
+						"all"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addSimpleWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"{{ 'https://jsonplaceholder.typicode.com/posts?userId=' + getUser.id }}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addSimpleWorkflowWithIdempotency",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"sampleWorkflowWithIdempotencyKey4\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\",\\\"idempotency_key\\\":\\\"{{applicationId}}\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"{{ 'https://jsonplaceholder.typicode.com/posts?userId=' + getUser.id }}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\", \\\"idempotency_key\\\":\\\"{{applicationId}}\\\"}]}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addSimpleWorkflowValidationCheck",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"sampleWorkflowValidationCheck\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n}\n\n/*\n    The above workflow is missing the request_url from 2nd node\n    \\\"request_url\\\":\\\"{{ 'https://jsonplaceholder.typicode.com/posts?userId=' + getUser.id }}\\\"\n\n*/\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addComplexWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"complexWorkflow\",\n  \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"authToken\\\",\\\"request_url\\\":\\\"http://localhost:8089/post\\\",\\\"method\\\":\\\"POST\\\",\\\"request_body\\\":{\\\"username\\\":\\\"demo\\\",\\\"password\\\":\\\"demo123\\\"},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"http://localhost:8089/users/1\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":3,\\\"name\\\":\\\"getUserProfile\\\",\\\"request_url\\\":\\\"http://localhost:8089/get\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{\\\"Authorization\\\":\\\"{{'Bearer ' + authToken.token}}\\\"},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":4,\\\"name\\\":\\\"getInternalData\\\",\\\"request_url\\\":\\\"http://localhost:8089/basic-auth/demo/pass\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{\\\"Authorization\\\":\\\"{{ 'Basic ' + base64.base64('demo:pass') }}\\\"},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addComplexWorkflowViaFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/NomanAhmed/Documents/Noman/code/github/python101/sandbox/workflow_unescaped_output.json"
+						},
+						{
+							"key": "name",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/fileupload?name=ComplexWorkflowViaFile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"fileupload"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "ComplexWorkflowViaFile"
+						},
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addComplexWorkflowViaFileValidationCheck",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/NomanAhmed/Documents/Noman/code/github/python101/sandbox/workflow_unescaped_output.json"
+						},
+						{
+							"key": "name",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/fileupload?name=ComplexWorkflowViaFile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"fileupload"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "ComplexWorkflowViaFile"
+						},
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addLoanCheckWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "/* \n    This workflow has two nodes.\n    1. Call to loan-check endpoint\n    2. Call to risk-assessment endpoint\n\n    Node 2 will only be executed if the limit attribute from loan-check node response is >= 10000\n*/\n{\n    \"name\": \"loanCheckWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\": [{\\\"id\\\": 1, \\\"name\\\": \\\"LoanCheck\\\", \\\"request_url\\\": \\\"http://localhost:8089/loan-check/{{userId}}\\\", \\\"method\\\": \\\"GET\\\", \\\"request_headers\\\": {\\\"X-Request-ID\\\": \\\"{{requestId}}\\\"}, \\\"query_params\\\": {\\\"amount\\\": \\\"{{loanAmount}}\\\"}}, {\\\"id\\\": 2, \\\"name\\\": \\\"RiskAssessment\\\", \\\"condition\\\": \\\"LoanCheck.limit >= loanAmount\\\", \\\"request_url\\\": \\\"http://localhost:8089/risk-check/{{userId}}\\\", \\\"method\\\": \\\"GET\\\"}]}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addPostWithBodyWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"PostWithBodyWorkflow\",\n  \"workflowJson\": \"{\\\"nodes\\\": [{\\\"id\\\": 1, \\\"name\\\": \\\"ValidateUser\\\", \\\"method\\\": \\\"POST\\\", \\\"request_url\\\": \\\"http://localhost:8089/validate-user\\\", \\\"request_body\\\": {\\\"userId\\\": \\\"{{userId}}\\\", \\\"loanAmount\\\": \\\"{{loanAmount}}\\\"}, \\\"request_headers\\\": {\\\"Content-Type\\\": \\\"application/json\\\"}}]}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "addErrorComplexWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"errorComplexWorkflow\",\n  \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"authToken\\\",\\\"request_url\\\":\\\"http://localhost:8089/post\\\",\\\"method\\\":\\\"POST\\\",\\\"request_body\\\":{\\\"username\\\":\\\"demo\\\",\\\"password\\\":\\\"demo123\\\"},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"http://localhost:8089/users/1\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":3,\\\"name\\\":\\\"getUserProfile\\\",\\\"request_url\\\":\\\"http://localhost:8089/gget\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{\\\"Authorization\\\":\\\"{{'Bearer ' + authToken.token}}\\\"},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":4,\\\"name\\\":\\\"getInternalData\\\",\\\"request_url\\\":\\\"http://localhost:8089/basic-auth/demo/pass\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{\\\"Authorization\\\":\\\"{{ 'Basic ' + base64.base64('demo:pass') }}\\\"},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "updateComplexWorkflow",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"complexWorkflow\",\n  \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"authToken\\\",\\\"request_url\\\":\\\"http://localhost:8089/post\\\",\\\"method\\\":\\\"POST\\\",\\\"request_body\\\":{\\\"username\\\":\\\"demo\\\",\\\"password\\\":\\\"demo123\\\"},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"http://localhost:8089/users/1\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":3,\\\"name\\\":\\\"getUserProfile\\\",\\\"request_url\\\":\\\"http://localhost:8089/get\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{\\\"Authorization\\\":\\\"{{'Bearer ' + authToken.token}}\\\"},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":4,\\\"name\\\":\\\"getInternalData\\\",\\\"request_url\\\":\\\"http://localhost:8089/basic-auth/demo/pass\\\",\\\"method\\\":\\\"GET\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{\\\"Authorization\\\":\\\"{{ 'Basic ' + base64.base64('demo:pass') }}\\\"},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/complexWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"complexWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteWorkflow",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/loanCheckWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"loanCheckWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"sampleWorkflow\",\n    \"workflowJson\": \"{\\\"nodes\\\":[{\\\"id\\\":1,\\\"name\\\":\\\"getUser\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/users/1\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"},{\\\"id\\\":2,\\\"name\\\":\\\"getPosts\\\",\\\"request_url\\\":\\\"https://jsonplaceholder.typicode.com/posts?userId={{getUser.id}}\\\",\\\"request_body\\\":{},\\\"request_headers\\\":{},\\\"query_params\\\":{},\\\"condition\\\":\\\"true\\\"}]}\"\n  }'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runSimpleWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/sampleWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"sampleWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runSimpleWorkflowWithIdempotency",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"applicationId\": \"temporal-111\"\n}\n\n/*\n    This key is going to be used as idempotency key and stored in applicationId and idempotency columns in workflow_execution_steps table\n*/",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/sampleWorkflowWithIdempotencyKey4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"sampleWorkflowWithIdempotencyKey4"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runLoanCheckWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"456\",\n  \"loanAmount\": 12000,\n  \"requestId\": \"xyz888\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/loanCheckWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"loanCheckWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runPostWithBodyWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"12345\",\n    \"loanAmount\": 5000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/PostWithBodyWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"PostWithBodyWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runComplexWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/complexWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"complexWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runComplexWorkflowViaFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/complexWorkflowViaFile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"complexWorkflowViaFile"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "runErrorComplexWorkflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/workflows/run/errorComplexWorkflow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"workflows",
+						"run",
+						"errorComplexWorkflow"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/api/workflows/run/sampleWorkflow \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n"
+			},
+			"response": []
+		}
+	]
+}
