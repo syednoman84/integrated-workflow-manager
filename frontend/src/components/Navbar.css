@@ -16,20 +16,17 @@
   font-size: 20px;
   font-weight: bold;
   color: #ffffff;
-  margin-right: 40px; /* Add spacing between logo and menus */
+  margin-right: 40px;
+  text-decoration: none;
 }
 
-/* Menu container next to logo */
-.menu {
-  display: flex;
-  gap: 20px;
-}
-
-/* Dropdown positioning */
+/* Dropdown container */
 .dropdown {
   position: relative;
+  margin-right: 20px;
 }
 
+/* Button */
 .dropbtn {
   background-color: transparent;
   color: white;
@@ -39,6 +36,7 @@
   cursor: pointer;
 }
 
+/* Dropdown content */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -47,10 +45,11 @@
   top: 100%;
   left: 0;
   z-index: 1000;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   flex-direction: column;
 }
 
+/* Dropdown links */
 .dropdown-content a {
   color: white;
   padding: 10px 16px;
@@ -62,10 +61,12 @@
   background-color: #555;
 }
 
+/* Show menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
+/* Highlight button on hover */
 .dropdown:hover .dropbtn {
   background-color: #3e3e3e;
 }

@@ -1,0 +1,27 @@
+{
+  "name": "Alpha8",
+  "workflowJson": {
+    "nodes": [
+      {
+        "id": 1,
+        "name": "getUser",
+        "request_url": "https://jsonplaceholder.typicode.com/users/1",
+        "request_body": {},
+        "request_headers": {},
+        "query_params": {},
+        "condition": "true",
+        "idempotency_key": "{{applicationId}}"
+      },
+      {
+        "id": 2,
+        "name": "getPosts",
+        "request_url": "{{ 'https://jsonplaceholder.typicode.com/posts?userId=' + getUser.id }}",
+        "request_body": {},
+        "request_headers": {},
+        "query_params": {},
+        "condition": "true",
+        "idempotency_key": "{{applicationId}}"
+      }
+    ]
+  }
+}

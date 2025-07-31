@@ -4,7 +4,9 @@ import "./Navbar.css";
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <Link to="/" className="logo">Workflow Manager</Link>
+      <Link to="/" className="logo">
+        Workflow Manager
+      </Link>
 
       <div className="dropdown">
         <button className="dropbtn">Workflows</button>

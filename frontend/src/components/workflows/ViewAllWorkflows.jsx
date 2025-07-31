@@ -17,35 +17,35 @@ export default function ViewAllWorkflows() {
     fetchWorkflowNames();
   }, []);
 
-  return (
-    <div className="container">
-      <h2>All Workflows</h2>
-      {workflowNames.length === 0 ? (
-        <p>No workflows found.</p>
-      ) : (
-        <table border="1" cellPadding="8">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Workflow Name</th>
-              <th>Action</th>
+ return (
+  <div className="container">
+    <h2 style={{ marginBottom: "20px" }}>All Workflows</h2>
+    {workflowNames.length === 0 ? (
+      <p>No workflows found.</p>
+    ) : (
+      <table className="fancy-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Workflow Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {workflowNames.map((name, index) => (
+            <tr key={name}>
+              <td>{index + 1}</td>
+              <td>{name}</td>
+              <td>
+                <Link to={`/workflows/view/${name}`}>
+                  <button className="view-button">View</button>
+                </Link>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {workflowNames.map((name, index) => (
-              <tr key={name}>
-                <td>{index + 1}</td>
-                <td>{name}</td>
-                <td>
-                  <Link to={`/workflows/view/${name}`}>
-                    <button>View</button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+);
 }
